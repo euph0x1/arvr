@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>A-Frame Geolocation</title>
+
+  <script src="/aframe.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+      function showShapes(position) {
+        var currentLatitude = position.coords.latitude;
+        var currentLongitude = position.coords.longitude;
+
+        console.log("Latitude:", currentLatitude);
+        console.log("Longitude:", currentLongitude);
+
+        var locations = [
+          // Close to cylinder (same area)
+          { id: "box", lat: 12.9048, lon: 77.5612, threshold: 0.008 },
+          { id: "cylinder", lat: 12.90509057, lon: 77.55971556, threshold: 0.01 },
+          { id: "sphere", lat: 12.9039, lon: 77.5628, threshold: 0.008 }
+        ];
+
+        locations.forEach(function (location) {
+          var shape = document.querySelector(`#${location.id}`);
+
+          if (
+            shape &&
+            Math.abs(currentLatitude - location.lat) < location.threshold &&
+            Math.abs(currentLongitude - location.lon) < location.threshold
+          ) {
+            shape.setAttribute('visible', 'true');
+          }
+        });
+
+        document.getElementById('currentLocation').innerHTML =
+          `Lat: ${currentLatitude}, Lon: ${currentLongitude}`;
+      }
+
+      function locationError(error) {
+        console.error("Error getting location:", error);
+        document.getElementById('currentLocation').innerHTML =
+          `Error getting location: ${error.message}`;
+      }
+
+      function getLocation() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            showShapes,
+            locationError,
+            {
+              enableHighAccuracy: true,
+              timeout: 10000,
+              maximumAge: 0
+            }
+          );
+        } else {
+          document.getElementById('currentLocation').innerHTML =
+            "Geolocation is not supported by this browser.";
+        }
+      }
+
+      getLocation();
+    });
+  </script>
+</head>
+
+<body>
+  <h3 id="currentLocation">Fetching location...</h3>
+
+  <a-scene>
+    <!-- BOX -->
+    <a-box
+      id="box"
+      position="0 1 -3"
+      rotation="0 45 0"
+      color="red"
+      scale="1.4 1.4 1.4"
+      visible="false">
+    </a-box>
+
+    <!-- CYLINDER (unchanged) -->
+    <a-cylinder
+      id="cylinder"
+      position="2 0.75 -3"
+      radius="0.5"
+      height="1.5"
+      color="pink"
+      visible="false">
+    </a-cylinder>
+
+    <!-- SPHERE -->
+    <a-sphere
+      id="sphere"
+      position="-2 1 -3"
+      radius="0.9"
+      color="purple"
+      visible="false">
+    </a-sphere>
+
+    <a-camera></a-camera>
+  </a-scene>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>360 Image Gallery</title>
+
+  <!-- LOCAL A-Frame -->
+  <script src="aframe.min.js"></script>
+
+  <script>
+    // Component to change 360 image when hotspot is activated
+    AFRAME.registerComponent('change-scene', {
+      schema: { target: { type: 'string' } },
+      init: function () {
+        this.el.addEventListener('click', () => {
+          const sky = document.querySelector('#sky');
+          sky.setAttribute('src', this.data.target);
+        });
+      }
+    });
+  </script>
+
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+  </style>
+</head>
+
+<body>
+
+<a-scene>
+
+  <!-- Load LOCAL 360 images -->
+  <a-assets>
+    <img id="img1" src="images/img1.jpg">
+    <img id="img2" src="images/img2.jpg">
+    <img id="img3" src="images/img3.jpg">
+  </a-assets>
+
+  <!-- Camera (PHONE + DESKTOP COMPATIBLE) -->
+  <a-camera
+    position="0 1.6 0"
+    look-controls
+    cursor="fuse: true; fuseTimeout: 1000"
+    raycaster="objects: .clickable">
+  </a-camera>
+
+  <!-- 360 Sky -->
+  <a-sky id="sky" src="#img1" rotation="0 -90 0"></a-sky>
+
+  <!-- Hotspot 1 -->
+  <a-circle
+    class="clickable"
+    position="-2 1.5 -3"
+    radius="0.3"
+    color="red"
+    change-scene="target: #img1">
+  </a-circle>
+
+  <a-text
+    value="Living Room"
+    position="-2 2.1 -3"
+    color="white"
+    align="center"
+    width="3">
+  </a-text>
+
+  <!-- Hotspot 2 -->
+  <a-circle
+    class="clickable"
+    position="0 1.5 -3"
+    radius="0.3"
+    color="blue"
+    change-scene="target: #img2">
+  </a-circle>
+
+  <a-text
+    value="Kitchen"
+    position="0 2.1 -3"
+    color="white"
+    align="center"
+    width="3">
+  </a-text>
+
+  <!-- Hotspot 3 -->
+  <a-circle
+    class="clickable"
+    position="2 1.5 -3"
+    radius="0.3"
+    color="green"
+    change-scene="target: #img3">
+  </a-circle>
+
+  <a-text
+    value="Bedroom"
+    position="2 2.1 -3"
+    color="white"
+    align="center"
+    width="3">
+  </a-text>
+
+</a-scene>
+
+</body>
+</html>
