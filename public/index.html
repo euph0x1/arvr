@@ -1,35 +1,77 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Marker Based</title>
-  <script src="aframe.min.js"></script>
-  <script src="mindar-image-aframe.prod.js"></script>
-  <style>
-    body {
-      margin: 0;
-      overflow: hidden;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simple A-Frame Scene</title>
+<script src="aframe.min.js"></script>
+
+<style>
+/* Ensure the body takes full height */
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+/* Style the button */
+button {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #4CC3D9;
+  border: none;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 10;
+}
+
+button:hover {
+  background-color: #3a9ca1;
+}
+</style>
 </head>
 
 <body>
-  <a-scene
-    mindar-image="imageTargetSrc: targets.mind;"
-    vr-mode-ui="false"
-    device-orientation-permission-ui="false">
 
-    <a-camera position="0 0 0" look-controls="false"></a-camera>
+<a-scene>
+  <a-assets>
+    <a-asset-item id="value" src="model/model.glb"></a-asset-item>
+  </a-assets>
 
-    <a-entity mindar-image-target="targetIndex: 0">
-      <a-torus
-        radius="0.3"
-        radius-tubular="0.05"
-        color="#ff4081"
-        animation="property: rotation; to: 0 360 0; loop: true; dur: 3000">
-      </a-torus>
-    </a-entity>
+  <a-entity position="0 1.6 0">
+    <a-camera></a-camera>
+  </a-entity>
 
-  </a-scene>
+  <a-entity 
+    id="model"
+    gltf-model="#value"
+    position="0 0 -5"
+    rotation="0 45 0"
+    scale="1 1 1">
+  </a-entity>
+
+</a-scene>
+
+<!-- Button -->
+<button onclick="rotateModel()">Rotate Model 45°</button>
+
+<script>
+// Function to rotate the model by 45 degrees each time
+function rotateModel() {
+  const model = document.querySelector('#model');
+
+  let currentRotation = model.getAttribute('rotation');
+
+  currentRotation.y += 45;
+
+  model.setAttribute('rotation', currentRotation);
+}
+</script>
+
 </body>
 </html>
