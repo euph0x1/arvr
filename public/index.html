@@ -1,34 +1,26 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <title>Marker Based</title>
+  <title>A-Frame AR Marker</title>
+
+  <!-- Local A-Frame -->
   <script src="aframe.min.js"></script>
-  <script src="mindar-image-aframe.prod.js"></script>
-  <style>
-    body {
-      margin: 0;
-      overflow: hidden;
-    }
-  </style>
+
+  <!-- Local AR.js for A-Frame -->
+  <script src="aframe-ar.js"></script>
 </head>
 
-<body>
-  <a-scene
-    mindar-image="imageTargetSrc: targets.mind;"
-    vr-mode-ui="false"
-    device-orientation-permission-ui="false">
+<body style="margin: 0; overflow: hidden;">
+  <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
 
-    <a-camera position="0 0 0" look-controls="false"></a-camera>
+    <!-- Marker -->
+    <a-marker type="pattern" url="pattern-letterA.patt">
+      <a-box position="0 0.5 0" material="color: red; opacity: 0.5"></a-box>
+      <a-cone color="green" height="1" radius="0.3" position="1 0.5 0"></a-cone>
+    </a-marker>
 
-    <a-entity mindar-image-target="targetIndex: 0">
-      <a-torus
-        radius="0.3"
-        radius-tubular="0.05"
-        color="#ff4081"
-        animation="property: rotation; to: 0 360 0; loop: true; dur: 3000">
-      </a-torus>
-    </a-entity>
+    <!-- Camera -->
+    <a-entity camera></a-entity>
 
   </a-scene>
 </body>
